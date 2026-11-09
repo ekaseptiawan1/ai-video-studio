@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b12">
+<title>AI Video Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#090b12;--panel:#121622;--panel2:#171d2b;--line:#252d40;--muted:#9aa5bb;--text:#f4f6fb;--purple:#8b6cff;--cyan:#42d9d0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 85% -10%,#282052 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:980px;margin:auto;padding:20px 16px 48px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:34px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;color:#090b12;font-size:20px}
+.status{font-size:12px;color:#b9f5df;border:1px solid #285b50;background:#10251f;padding:6px 10px;border-radius:99px}
+h1{font-size:clamp(30px,7vw,48px);line-height:1.08;letter-spacing:-1.5px;margin:0 0 12px}.grad{background:linear-gradient(90deg,#b6a4ff,#55e4db);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);max-width:620px;margin:0 0 28px}
+.card{background:linear-gradient(180deg,#151b29,#101520);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 16px 50px #0003}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}.tab{border:1px solid var(--line);background:#0e1320;color:var(--muted);border-radius:12px;padding:12px;font-weight:700}.tab.active{background:#292144;color:#fff;border-color:#7059c9}
+label{display:block;font-size:13px;font-weight:700;margin:16px 0 8px}.hint{font-size:12px;color:var(--muted);font-weight:400}
+textarea,select{width:100%;border:1px solid var(--line);border-radius:13px;background:#0b101a;color:var(--text);padding:13px;font:inherit;outline:none}textarea{min-height:116px;resize:vertical}textarea:focus,select:focus{border-color:var(--purple)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.upload{border:1px dashed #52607c;background:#0d1320;border-radius:14px;padding:18px;text-align:center;color:var(--muted);cursor:pointer}.upload strong{display:block;color:var(--text);margin:4px}.upload input{display:none}.preview{max-width:100%;max-height:210px;border-radius:12px;margin-top:12px;display:none}
+.primary{width:100%;border:0;border-radius:14px;padding:15px;margin-top:20px;background:linear-gradient(100deg,#8b6cff,#4bcfc9);color:#080b12;font-size:15px;font-weight:850}
+.notice{font-size:12px;color:#d8cfff;background:#211b35;border:1px solid #40336b;padding:12px;border-radius:12px;margin-top:14px}
+.result{min-height:180px;display:grid;place-items:center;text-align:center;color:var(--muted);background:#0b1019;border:1px dashed #303a50;border-radius:16px;padding:24px}
+.result .symbol{font-size:34px;margin-bottom:8px}.footer{text-align:center;color:#69748b;font-size:12px;margin-top:28px}
+@media(max-width:560px){.wrap{padding:16px 12px 36px}.card{padding:14px}.grid{grid-template-columns:1fr}.top{margin-bottom:28px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="top"><div class="brand"><div class="logo">✦</div><span>AI VIDEO STUDIO</span></div><span class="status">● Mode lokal / demo</span></header>
+<section><h1>Ubah ide jadi<br><span class="grad">video AI.</span></h1><p class="sub">Buat konsep video dari teks atau gambar dalam satu workspace sederhana. Antarmuka ini siap disambungkan ke mesin AI open-source milikmu.</p></section>
+<section class="card">
+<div class="tabs"><button class="tab active" id="textTab" type="button">✍️ Teks ke Video</button><button class="tab" id="imageTab" type="button">▧ Gambar ke Video</button></div>
+<label for="prompt">Prompt video <span class="hint">— jelaskan adegan yang ingin dibuat</span></label>
+<textarea id="prompt" placeholder="Contoh: Seekor kucing oren berjalan di taman saat matahari terbenam, sinematik, gerakan kamera perlahan..."></textarea>
+<div id="uploadArea" hidden><label>Gambar referensi</label><label class="upload" for="imageFile">＋<strong>Pilih gambar dari HP</strong><span class="hint">JPG, PNG, atau WEBP</span><input id="imageFile" type="file" accept="image/*"><img id="preview" class="preview" alt="Pratinjau gambar"></label></div>
+<div class="grid">
+<div><label for="ratio">Rasio video</label><select id="ratio"><option value="16:9">16:9 — Landscape</option><option value="9:16">9:16 — Vertikal</option><option value="1:1">1:1 — Kotak</option></select></div>
+<div><label for="duration">Durasi target</label><select id="duration"><option value="5">5 detik</option><option value="3">3 detik</option><option value="8">8 detik</option></select></div>
+</div>
+<button class="primary" id="generate">✦ Siapkan pembuatan video</button>
+<div class="notice" id="message">Mesin AI belum tersambung. Tombol di atas akan memeriksa isian dan menampilkan langkah koneksi—belum menghasilkan video.</div>
+</section>
+<section class="card"><label>Preview hasil</label><div class="result" id="result"><div><div class="symbol">▣</div><strong>Hasil video akan muncul di sini</strong><div class="hint">Setelah backend AI open-source terpasang.</div></div></div></section>
+<p class="footer">AI Video Studio · Antarmuka awal · Tidak menggunakan API key</p>
+</main>
+<script>
+let mode='text';
+const textTab=document.getElementById('textTab'),imageTab=document.getElementById('imageTab'),uploadArea=document.getElementById('uploadArea');
+function setMode(next){mode=next;textTab.classList.toggle('active',mode==='text');imageTab.classList.toggle('active',mode==='image');uploadArea.hidden=mode!=='image'}
+textTab.addEventListener('click',()=>setMode('text'));imageTab.addEventListener('click',()=>setMode('image'));
+document.getElementById('imageFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const img=document.getElementById('preview');img.src=URL.createObjectURL(f);img.style.display='block'});
+document.getElementById('generate').addEventListener('click',()=>{const p=document.getElementById('prompt').value.trim(),f=document.getElementById('imageFile').files[0],m=document.getElementById('message');if(!p){m.textContent='Tulis prompt terlebih dahulu.';return}if(mode==='image'&&!f){m.textContent='Pilih gambar referensi terlebih dahulu.';return}m.textContent='Isian siap. Backend AI belum dipasang, jadi video belum dibuat. Langkah berikutnya: siapkan mesin Wan 2.1 di GPU yang dapat kamu akses.';});
+</script>
+</body></html>
